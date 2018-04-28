@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <!-- 制作一个跑马灯效果 -->
+    <div id="app">
+        <!-- 开始按钮 -->
+        <input type="button" value="start" @click="start">
+        <!-- 停止按钮 -->
+        <input type="button" value="stop" @click="stop">
+        <!-- 跑马灯展示 -->
+        <p v-text="msg"></p>
+    </div>
+    
+    <script src="./lib/vue.js"></script>
+    <script>
+       var vm = new Vue({
+           el:'#app',
+           data:{
+               msg:'123456~!',
+               intervalId: null
+           },
+           methods:{
+               start() {
+                //    跑马灯定时每500ms执行一次
+                   if(!this.intervalId == null) return;
+                    this.intervalId = setInterval(() => {
+                        var xx = this.msg.substring(0,1);
+                        var ss = this.msg.substring(1);
+                        this.msg = ss+xx;
+                    },500);
+               },
+               stop() {
+                    clearInterval(this.intervalId);
+                    this.intervalId = null;
+               }
+           }
+       })
+    </script>
+</body>
+</html>

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="./lib/vue.js"></script>
+    <style>
+        .inner {
+            height: 150px;
+            background-color: darkturquoise;
+        }
+        .outer {
+            padding: 20px;
+            background-color: darkgreen;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="app">
+    
+        <!-- 
+            事件修饰符总结
+            .stop 阻止冒泡
+            .prevent 阻止默认事件
+            .capture 添加时间侦听器时使用事件捕获模式
+            .self 只有触发该元素自身时才执行
+            .once 事件只触发一次
+         -->
+        @click.stop阻止事件逐级冒泡 
+         <div class="inner" @click="div1Handler">
+            <input type="button" value="点我" @click.stop="btnHandler"/> 
+        </div>
+
+        @click.prevent 阻止默认事件
+        <div class="inner" @click="div1Handler">
+                <input type="submit" value="点我" @click.prevent="btnHandler"/> 
+        </div>
+        @click.capture 实现捕获触发事件的机制
+        <div class="inner" @click.capture="div1Handler">
+                <input type="button" value="点我" @click="btnHandler"/> 
+        </div>
+        @click.self 自管自己
+        <div class="outer" @click="outerHandler">
+            <div class="inner" @click.self="div1Handler">
+                    <input type="button" value="点我" @click="btnHandler"/> 
+            </div>
+        </div>
+         @click.once 只触发一次事件,在执行一次btnHandler 方法后，执行submit
+        <div class="inner" @click="div1Handler">
+                <input type="submit" value="点我" @click.prevent.once="btnHandler"/> 
+                <a href="www.baidu.com" @click.prevent.once="linkHandler"></a>
+        </div>
+
+    </div>
+
+    <script>
+    // 创建一个Vue实例
+    // 当导入包后，在浏览器的内存中就多了一个Vue构造函数
+    // new出来的这个 vm 对象就是我们 MVVM 中的 VM调度者
+    var vm = new Vue({
+        el: '#app',//表示当请new的Vue实例，要控制页面上的哪个区域
+        data:{
+            msg: 'hello world！！！',
+        },
+        methods: {
+            div1Handler() {
+                console.log('inner div按钮');
+            },
+            outerHandler() {
+                console.log("outer*******")
+            },
+            btnHandler() {
+                console.log('点我按钮');
+            },
+            linkHandler() {
+                console.log("link_________");
+            }
+        }
+    });
+    </script>
+</body>
+</html>
