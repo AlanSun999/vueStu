@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>v-for循环</title>
+    <script src="./lib/vue.js"></script>
+    <style>
+        td{
+            width: 40px;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        遍历对象数组
+        <table>
+            <tr>
+                <td>索引</td>
+                <td>id</td>
+                <td>name</td>
+            </tr>
+            <tr v-for="(user,i) in users">
+                <td>{{i}}</td>
+                <td>{{user.id}}</td>
+                <td>{{user.name}}</td>
+            </tr>
+        </table>
+        遍历对象属性
+        <p v-for="(val, key) in ssss">
+            值是：{{val}}-----键是：{{key}}
+        </p>
+    </div>
+<script>
+    var vm = new Vue({
+        el:'#app',
+        data:{
+            users:[
+                {id:1,name:'a'},
+                {id:2,name:'b'},
+                {id:3,name:'c'},
+                {id:4,name:'d'}
+            ],
+            ssss:{id:1,name:'assss',gender:'male'}
+        },
+        methods:{
+
+        }
+    })
+</script>
+</body>
+</html>
