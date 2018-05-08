@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>汽车品牌</title>
+    <script src="./lib/vue.js"></script>
+    <link rel="stylesheet" href="./lib/bootstrap.min.css"/>
+</head>
+<body>
+    <div id="app">
+        
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title">添加品牌</h3>
+            </div>
+            <div class="panel-body form-inline">
+                <label>
+                    Id：<input type="text" class="form-control" v-model="id">
+                </label>
+                <label>
+                    Name：<input type="text" class="form-control" v-model="name" @keyup.123="add">
+                </label>
+                <input type="button" value="添加" @click="add" class="btn btn-primary">
+                <label>
+                    搜索名称关键字：
+                    <input type="text" class="form-control" v-model="key" v-focus>
+                </label>
+            </div>
+        </div>
+
+
+
+
+        <table class="table table-bordered table-hover table-striped">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Name</th>
+                    <th>Ctime</th>
+                    <th>Operation</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="item in search(key)" :key="item.id">
+                    <td>{{item.id}}</td>
+                    <td>{{item.name}}</td>
+                    <td>{{item.ctime | timeFormat}}</td>  
+                    <td>
+                        <a href="" @click.prevent="del(item.id)">删除</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div> 
+
+    <script>
+        //自定义全局按键修饰符
+        Vue.config.keyCodes.f2 = 123;
+        
+        //自定义全局指令 Vue.directive()
+        Vue.directive('focus',{
+            bind:function(el){//每当指令绑定到元素上的时候，会立即执行这个bind函数，且只执行一次
+                //在每个函数中，第一个参数永远是el，表示被绑定了指令的那个元素，这个el参数是原生的JS对象（就是dom）
+                //在元素刚绑定了指令，还没插入到DOM中去，这时候调用无效果。
+                // 元素只有插入dom中，才能获取焦点
+                // el.focus()
+            },
+            inserted:function(el){//表示元素插入到Dom中的时候，会执行inserted函数【触发一次】
+                el.focus()
+            },
+            updated:function(){//当VNode更新的时候，会执行Updated，可能会触发多次
+
+            }
+        })
+
+
+
+        //全局过滤器
+        Vue.filter('timeFormat',function(dateStr){
+            var dt = new Date(dateStr);
+            var y = dt.getFullYear();
+            var m = dt.getMonth()+1
+            var d = dt.getDate().toString().padStart(2,"0");//若不满两位在前面填充0
+            return `${y}-${m}-${d}`
+        })
+
+       var vm = new Vue({
+           el:'#app',
+           data:{
+                list:[
+                    {id:1, name:'奔驰', ctime:new Date()},
+                    {id:2, name:'法拉利', ctime:new Date()},
+                    {id:3, name:'宝马', ctime:new Date()},
+                ],
+                id:'',
+                name:'',
+                key:''//搜索关键字
+           },
+           methods:{
+               add() {
+                    var car = {id:this.id,name:this.name,ctime:new Date()}
+
+                   this.list.push(car);
+               },
+               del(id) {
+                   this.list.some((item,i)=>{
+                       if(item.id == id){
+                           this.list.splice(i,1);
+                           return true;
+                       }
+                   })
+               },
+               search(key) {
+                // 原始方式
+                //    var newList=[]
+                //    this.list.forEach(item => {
+                //        if(item.name.indexOf(key)!=-1){
+                //            newList.push(item);
+                //        }
+                //    });
+                //    return newList;
+                
+                // 新方式
+                return this.list.filter(item => {
+                    // ES6中为字符串提供了新方法叫做 String.protorype.includes('要包含的字符串')
+                    // 如果包含返回true，否则返回false
+                    if(item.name.includes(key)){
+                        return item
+                    }
+                })
+               }
+           },
+           filters:{
+
+           }
+       })
+       //过滤器语法
+    //    Vue.filter('过滤器名称',function(){})
+    // 过滤器中的function，第一个参数，已经规定死了，永远都是 过滤器 管道符前面 传过来的数据
+    // Vue.filter('',function(data){
+
+    // })
+    </script>
+</body>
+</html>
