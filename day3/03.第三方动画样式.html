@@ -6,13 +6,13 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>第三方样式库 animate.css 使用</title>
     <script src="./lib/vue.js"></script>
-    <link rel="stylesheet" href="./lib/animate.css">
+    <link rel="stylesheet" href="./lib/animate.css">   
 </head>
 <body>
     <div id="app">
         <input type="button" value="toggle" @click="flag=!flag">
         <transition enter-active-class="animated lightSpeedIn" leave-active-class="animated lightSpeedOut">
-                <h3 v-if="flag">This`s H3,使用动画</h3>
+                <h3 v-if="flag">This`s H3,使用第三方动画库</h3>
         </transition>
     </div>
     <script>
